@@ -18,8 +18,7 @@ public class MySQLManager {
 	public Connection getConnection() {
 		try {
 			Class.forName(driver).newInstance();
-//			System.out.println("username:"+username);
-//			System.out.println("password:"+password);
+
 			Connection con=DriverManager.getConnection(url,username,password);
 			return con;
 		} catch (InstantiationException e) {
