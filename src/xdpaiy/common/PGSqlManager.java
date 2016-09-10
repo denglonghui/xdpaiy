@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PGSqlManager {
 	public static void main(String args[]) { 
@@ -25,6 +26,27 @@ public class PGSqlManager {
 	         System.exit(0); 
 	      } 
 	      System.out.println("Opened database successfully"); 
-	   } 
+	   }
+	
+	public static Connection getConnectionPostgres() throws SQLException, ClassNotFoundException{
+		 Class.forName("org.postgresql.Driver"); 
+		 Connection   c = DriverManager 
+            .getConnection("jdbc:postgresql://localhost:5432/postgres", 
+            "postgres", "postgres"); 
+         return c;
+	}
+	public static Connection getConnectionMydb() throws SQLException, ClassNotFoundException{
+		 Class.forName("org.postgresql.Driver"); 
+		 Connection   c = DriverManager 
+           .getConnection("jdbc:postgresql://localhost:5432/mydb", 
+           "postgres", "postgres"); 
+        return c;
+	}
+	
+	public static ResultSet queryBySQL(Connection con,String sql) throws SQLException{
+		 PreparedStatement ps = con.prepareStatement(sql);
+		 ResultSet rs = ps.executeQuery();
+		 return rs;
+	}
 
 }
