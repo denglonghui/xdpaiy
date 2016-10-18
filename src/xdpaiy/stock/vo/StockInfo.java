@@ -7,9 +7,13 @@ public class StockInfo {
 	private String area;
 	private double pe;
 	private double outstanding;
-	private double totals;
+	private double totals;//总股本(万)
+	private double totalAssets;//总资产(万)
+	private double reservedPerShare;//每股公积金
+	private double eps;//每股收益
+	private double bvps;//每股净资
 	private double pb;
-	private String ipoDate;
+	private String timeToMarket;
 	public String getCode() {
 		return code;
 	}
@@ -58,12 +62,37 @@ public class StockInfo {
 	public void setPb(double pb) {
 		this.pb = pb;
 	}
-	public String getIpoDate() {
-		return ipoDate;
+	public double getTotalAssets() {
+		return totalAssets;
 	}
-	public void setIpoDate(String ipoDate) {
-		this.ipoDate = ipoDate;
+	public void setTotalAssets(double totalAssets) {
+		this.totalAssets = totalAssets;
 	}
+	public double getReservedPerShare() {
+		return reservedPerShare;
+	}
+	public void setReservedPerShare(double reservedPerShare) {
+		this.reservedPerShare = reservedPerShare;
+	}
+	public double getEps() {
+		return eps;
+	}
+	public void setEps(double eps) {
+		this.eps = eps;
+	}
+	public double getBvps() {
+		return bvps;
+	}
+	public void setBvps(double bvps) {
+		this.bvps = bvps;
+	}
+	public String getTimeToMarket() {
+		return timeToMarket;
+	}
+	public void setTimeToMarket(String timeToMarket) {
+		this.timeToMarket = timeToMarket;
+	}
+	
 	
 
 }

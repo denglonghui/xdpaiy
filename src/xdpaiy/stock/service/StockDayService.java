@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xdpaiy.common.PGSqlManager;
+import xdpaiy.common.Util;
 import xdpaiy.stock.vo.StockDayInfo;
 import xdpaiy.stock.vo.StockInfo;
 
@@ -47,6 +48,45 @@ public class StockDayService {
 		con.close();
 		
 		return list;
+	}
+	
+	public static List<String> queryOldStockCodes() throws SQLException, ClassNotFoundException{
+		List<String> list = new ArrayList<String>();
+		int today=Util.getTodayInt();
+		Connection con = PGSqlManager.getConnectionPostgres();
+		String sql="select code from stock_list where ("+today+"- \"timeToMarket\")>100 ";
+		ResultSet rs = PGSqlManager.queryBySQL(con, sql);
+		while(rs.next()){
+			String code=rs.getString("code");
+			list.add(code);
+		}
+		rs.close();
+		con.close();
+		
+		return list;
+	}
+	
+	public static StockInfo queryStockInfoByCode(String code) throws ClassNotFoundException, SQLException{
+		Connection con = PGSqlManager.getConnectionPostgres();
+		String sql="select * from stock_list where code='"+code+"' ";
+		ResultSet rs = PGSqlManager.queryBySQL(con, sql);
+		StockInfo vo = null;
+		while(rs.next()){
+			vo = new StockInfo();
+			vo.setCode(rs.getString("code"));
+			vo.setName(rs.getString("name"));
+			vo.setIndustry(rs.getString("industry"));
+			vo.setArea(rs.getString("area"));
+			vo.setPb(rs.getDouble("pe"));
+			vo.setOutstanding(rs.getDouble("outstanding"));
+			vo.setTotals(rs.getDouble("totals"));
+			vo.setPb(rs.getDouble("pb"));
+//			vo.setIpoDate(rs.getString(columnIndex));
+			
+		}
+		rs.close();
+		con.close();
+		return vo;
 	}
 	
 	public static void calStock(String code) throws ClassNotFoundException, SQLException{
@@ -102,9 +142,9 @@ public class StockDayService {
 //			List<StockDayInfo> l=queryStockDayInfoByCode("600783");
 //			for(int i=0;i<l.size();i++)
 //			System.out.println(l.get(i).getDate()+"|"+l.get(i).getClose()+"|"+l.get(i).getpChange()+"%");
-			List<String> codes=queryAllCodes();
+			List<String> codes=queryOldStockCodes();
 			for(int i=0;i<codes.size();i++){
-				calStock(codes.get(i));
+				calStock(codes.get(i));	
 			}
 			
 		} catch (ClassNotFoundException e) {
